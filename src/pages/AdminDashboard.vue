@@ -103,7 +103,7 @@ onMounted(load)
     <div v-else-if="error" class="status-msg">{{ error }}</div>
 
     <!-- Editor Mode -->
-    <template v-if="isNew || isEdit">
+    <template v-if="!loading && (isNew || isEdit)">
       <PostEditor
         :title="currentPost.title"
         :content="currentPost.content"

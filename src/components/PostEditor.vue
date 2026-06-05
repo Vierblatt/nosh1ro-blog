@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { marked } from 'marked'
 
 const props = defineProps<{
@@ -18,17 +18,23 @@ const emit = defineEmits<{
 const preview = ref(false)
 const saving = ref(false)
 
-function buildTags(): string[] {
-  return props.tags ? props.tags.split(',').map(t => t.trim()).filter(Boolean) : []
-}
-
-const previewHtml = computed(() => marked.parse(localContent.value) as string)
-
 const localTitle = ref(props.title)
 const localContent = ref(props.content)
 const localCategory = ref(props.category)
 const localTags = ref(props.tags)
 const localStatus = ref(props.status)
+
+watch(() => props.title, v => { localTitle.value = v })
+watch(() => props.content, v => { localContent.value = v })
+watch(() => props.category, v => { localCategory.value = v })
+watch(() => props.tags, v => { localTags.value = v })
+watch(() => props.status, v => { localStatus.value = v })
+
+function buildTags(): string[] {
+  return props.tags ? props.tags.split(',').map(t => t.trim()).filter(Boolean) : []
+}
+
+const previewHtml = computed(() => marked.parse(localContent.value) as string)
 
 async function handleSave() {
   saving.value = true
