@@ -41,7 +41,7 @@ export async function login(username: string, password: string): Promise<string>
 }
 
 export async function registerUser(req: RegisterRequest): Promise<RegisterResponse> {
-  const res = await fetch(`${AUTH_BASE}/auth/register`, {
+  const res = await fetch(`${AUTH_BASE}/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(req),
@@ -52,14 +52,14 @@ export async function registerUser(req: RegisterRequest): Promise<RegisterRespon
 }
 
 export async function verifyEmail(token: string): Promise<VerifyResponse> {
-  const res = await fetch(`${AUTH_BASE}/auth/verify?token=${encodeURIComponent(token)}`)
+  const res = await fetch(`${AUTH_BASE}/verify?token=${encodeURIComponent(token)}`)
   const body = await res.json()
   if (!res.ok) throw new Error(body.message || '验证失败')
   return body
 }
 
 export async function resendVerification(req: ResendRequest): Promise<RegisterResponse> {
-  const res = await fetch(`${AUTH_BASE}/auth/resend-verification`, {
+  const res = await fetch(`${AUTH_BASE}/resend-verification`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(req),
