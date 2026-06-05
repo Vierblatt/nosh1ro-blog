@@ -1,4 +1,4 @@
-import type { Post, PostListResponse } from '../types/post'
+import type { Post, PostListResponse, SearchRequest, SearchResult } from '../types/post'
 
 const BASE = '/api'
 
@@ -40,6 +40,16 @@ export async function verifyPost(id: string, password: string): Promise<string> 
   }
   const data = await res.json()
   return data.content
+}
+
+export async function searchPosts(params: SearchRequest): Promise<SearchResult> {
+  const res = await fetch(`${BASE}/posts/search`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+  })
+  if (!res.ok) throw new Error(`搜索失败`)
+  return res.json()
 }
 
 export async function fetchTags(): Promise<string[]> {

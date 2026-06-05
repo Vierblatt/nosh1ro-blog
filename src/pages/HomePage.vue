@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import type { Post, PostListResponse } from '../types/post'
-import { fetchPosts, fetchTags } from '../api/public'
+import type { Post, PostListResponse, SearchHit, AggBucket } from '../types/post'
+import { fetchPosts, searchPosts, fetchTags } from '../api/public'
 import SearchBar from '../components/SearchBar.vue'
 import TagCloud from '../components/TagCloud.vue'
 import PostCard from '../components/PostCard.vue'
@@ -18,18 +18,46 @@ const size = 10
 const loading = ref(true)
 const error = ref('')
 
+const searchResults = ref<SearchHit[] | null>(null)
+const aggs = ref<{ categories: AggBucket[]; tags: AggBucket[] }>({ categories: [], tags: [] })
+const searchHl = ref<Record<string, { title?: string; summary?: string }>>({})
+
 async function load() {
   loading.value = true
   error.value = ''
   try {
-    const data: PostListResponse = await fetchPosts({
-      page: page.value,
-      size,
-      tag: selectedTags.value.join(','),
-      q: searchQuery.value || undefined,
-    })
-    posts.value = data.posts
-    total.value = data.total
+    if (searchQuery.value && !selectedTags.value.length) {
+      const result = await searchPosts({
+        q: searchQuery.value,
+        page: page.value,
+        size,
+      })
+      searchResults.value = result.posts
+      total.value = result.total
+      aggs.value = result.aggregations
+      const hl: Record<string, { title?: string; summary?: string }> = {}
+      for (const h of result.posts) {
+        if (h.highlights) {
+          hl[h.id] = {
+            title: h.highlights.title?.[0],
+            summary: h.highlights.content?.[0],
+          }
+        }
+      }
+      searchHl.value = hl
+    } else {
+      searchResults.value = null
+      aggs.value = { categories: [], tags: [] }
+      searchHl.value = {}
+      const data: PostListResponse = await fetchPosts({
+        page: page.value,
+        size,
+        tag: selectedTags.value.join(',') || undefined,
+        q: selectedTags.value.length ? undefined : (searchQuery.value || undefined),
+      })
+      posts.value = data.posts
+      total.value = data.total
+    }
   } catch {
     error.value = '加载失败，请刷新重试'
   } finally {
@@ -52,6 +80,12 @@ function onSearch(val: string) {
   page.value = 1
 }
 
+function onAggClick(type: 'categories' | 'tags', key: string) {
+  if (type === 'tags') {
+    toggleTag(key)
+  }
+}
+
 watch([selectedTags, searchQuery, page], () => load(), { deep: true })
 
 onMounted(async () => {
@@ -60,6 +94,17 @@ onMounted(async () => {
   } catch { /* tags are optional */ }
   load()
 })
+
+function toPost(hit: SearchHit): Post {
+  return {
+    id: hit.id,
+    title: hit.title,
+    summary: hit.summary,
+    date: hit.date,
+    category: hit.category,
+    tags: hit.tags,
+  }
+}
 </script>
 
 <template>
@@ -84,11 +129,43 @@ onMounted(async () => {
     <SearchBar @search="onSearch" />
     <TagCloud :tags="tags" :selected="selectedTags" @toggle="toggleTag" />
 
+    <!-- Aggregation chips -->
+    <div v-if="aggs.categories.length || aggs.tags.length" class="agg-bar">
+      <template v-if="aggs.categories.length">
+        <span class="agg-label">分类：</span>
+        <button
+          v-for="c in aggs.categories" :key="c.key"
+          class="agg-chip"
+          @click="onAggClick('categories', c.key)"
+        >{{ c.key }} ({{ c.count }})</button>
+      </template>
+      <template v-if="aggs.tags.length">
+        <span class="agg-label">标签：</span>
+        <button
+          v-for="t in aggs.tags" :key="t.key"
+          class="agg-chip"
+          @click="onAggClick('tags', t.key)"
+        >{{ t.key }} ({{ t.count }})</button>
+      </template>
+    </div>
+
     <SkeletonCard v-if="loading" :count="3" />
     <div v-else-if="error" class="status-msg">{{ error }}</div>
-    <div v-else-if="!posts.length" class="status-msg">暂无文章</div>
+    <div v-else-if="!searchResults && !posts.length" class="status-msg">暂无文章</div>
+    <div v-else-if="searchResults && !searchResults.length" class="status-msg">未找到匹配文章</div>
     <template v-else>
-      <PostCard v-for="post in posts" :key="post.id" :post="post" />
+      <template v-if="searchResults">
+        <PostCard
+          v-for="hit in searchResults"
+          :key="hit.id"
+          :post="toPost(hit)"
+          :title-html="searchHl[hit.id]?.title"
+          :summary-html="searchHl[hit.id]?.summary"
+        />
+      </template>
+      <template v-else>
+        <PostCard v-for="post in posts" :key="post.id" :post="post" />
+      </template>
       <Pagination :page="page" :total="total" :size="size" @page="p => page = p" />
     </template>
   </div>
@@ -156,6 +233,43 @@ onMounted(async () => {
   padding: 48px 0;
   color: #8b949e;
   font-size: 16px;
+}
+
+.agg-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: #161b22;
+  border: 1px solid #21262d;
+  border-radius: 8px;
+}
+
+.agg-label {
+  color: #6e7681;
+  font-size: 13px;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.agg-chip {
+  background: #21262d;
+  border: 1px solid #30363d;
+  color: #c9d1d9;
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.agg-chip:hover {
+  border-color: #58a6ff;
+  color: #58a6ff;
+  background: rgba(88, 166, 255, 0.08);
 }
 
 @media (max-width: 640px) {

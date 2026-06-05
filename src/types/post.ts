@@ -48,3 +48,38 @@ export interface VerifyResponse {
 export interface ResendRequest {
   email: string
 }
+
+export interface SearchRequest {
+  q?: string
+  category?: string
+  tag?: string
+  page?: number
+  size?: number
+}
+
+export interface SearchResult {
+  posts: SearchHit[]
+  total: number
+  aggregations: {
+    categories: AggBucket[]
+    tags: AggBucket[]
+  }
+}
+
+export interface SearchHit {
+  id: string
+  title: string
+  summary: string
+  date: string
+  category: string
+  tags: string[]
+  highlights?: {
+    title?: string[]
+    content?: string[]
+  }
+}
+
+export interface AggBucket {
+  key: string
+  count: number
+}

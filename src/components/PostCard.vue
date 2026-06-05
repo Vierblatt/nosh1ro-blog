@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import type { Post } from '../types/post'
 
-const props = defineProps<{ post: Post }>()
+const props = defineProps<{ post: Post; titleHtml?: string; summaryHtml?: string }>()
 
 const readingTime = computed(() => {
   if (!props.post.summary) return null
@@ -28,9 +28,11 @@ const formattedDate = computed(() => {
       <span v-if="readingTime" class="card-readtime">{{ readingTime }}</span>
     </div>
     <h2 class="card-title">
-      <router-link :to="`/posts/${post.id}`">{{ post.title }}</router-link>
+      <router-link v-if="!titleHtml" :to="`/posts/${post.id}`">{{ post.title }}</router-link>
+      <router-link v-else :to="`/posts/${post.id}`" v-html="titleHtml"></router-link>
     </h2>
-    <p v-if="post.summary" class="card-summary">{{ post.summary }}</p>
+    <p v-if="summaryHtml" class="card-summary" v-html="summaryHtml"></p>
+    <p v-else-if="post.summary" class="card-summary">{{ post.summary }}</p>
     <div class="card-tags" v-if="post.tags?.length">
       <span class="card-tag" v-for="t in post.tags" :key="t">{{ t }}</span>
     </div>
@@ -113,6 +115,19 @@ const formattedDate = computed(() => {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.card-summary :deep(em) {
+  color: #e6edf3;
+  background: rgba(210, 153, 34, 0.25);
+  font-style: normal;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+.card-title :deep(em) {
+  color: #58a6ff;
+  font-style: normal;
 }
 
 .card-tags {
