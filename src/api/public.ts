@@ -1,4 +1,4 @@
-import type { Post, PostListResponse } from './types/post'
+import type { Post, PostListResponse } from '../types/post'
 
 const BASE = '/api'
 
@@ -18,13 +18,13 @@ export async function fetchPosts(params?: {
   const qs = sp.toString()
   const url = qs ? `${BASE}/posts?${qs}` : `${BASE}/posts`
   const res = await fetch(url)
-  if (!res.ok) throw new Error(`fetchPosts failed: ${res.status}`)
+  if (!res.ok) throw new Error(res.status === 429 ? '请求过于频繁，请稍候' : `请求失败: ${res.status}`)
   return res.json()
 }
 
 export async function fetchPost(id: string): Promise<Post> {
   const res = await fetch(`${BASE}/posts/${id}`)
-  if (!res.ok) throw new Error(`fetchPost failed: ${res.status}`)
+  if (!res.ok) throw new Error(`文章不存在`)
   return res.json()
 }
 
@@ -34,14 +34,22 @@ export async function verifyPost(id: string, password: string): Promise<string> 
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ password }),
   })
-  if (!res.ok) throw new Error('wrong password')
+  if (!res.ok) {
+    if (res.status === 403) throw new Error('密码错误')
+    throw new Error('解密失败')
+  }
   const data = await res.json()
   return data.content
 }
 
 export async function fetchTags(): Promise<string[]> {
   const res = await fetch(`${BASE}/tags`)
-  if (!res.ok) throw new Error(`fetchTags failed: ${res.status}`)
+  if (!res.ok) throw new Error(`获取标签失败`)
   const data = await res.json()
   return data.tags
+}
+
+export async function fetchHealth(): Promise<{ status: string; db: string }> {
+  const res = await fetch(`${BASE}/health`)
+  return res.json()
 }
