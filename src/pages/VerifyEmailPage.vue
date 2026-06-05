@@ -18,9 +18,9 @@ onMounted(async () => {
     const res = await verifyEmail(token)
     state.value = 'success'
     message.value = res.message
-  } catch (e: any) {
+  } catch (e: unknown) {
     state.value = 'error'
-    message.value = e.message || '验证失败，链接可能已过期'
+    message.value = (e instanceof Error ? e.message : null) || '验证失败，链接可能已过期'
   }
 })
 </script>

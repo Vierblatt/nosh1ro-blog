@@ -67,19 +67,27 @@ async function handleSave(data: { title: string; content: string; category: stri
     }
     router.push('/admin')
     load()
-  } catch (e) {
-    alert(e instanceof Error ? e.message : '保存失败')
+  } catch (e: unknown) {
+    error.value = e instanceof Error ? e.message : '保存失败'
   }
 }
 
-async function handleDelete(id: string) {
-  if (!confirm('确定删除这篇文章？')) return
+const deleteTarget = ref<string | null>(null)
+
+function requestDelete(id: string) {
+  deleteTarget.value = id
+}
+
+async function confirmDelete() {
+  const id = deleteTarget.value
+  if (!id) return
   deleting.value = id
+  deleteTarget.value = null
   try {
     await apiDeletePost(id)
     posts.value = posts.value.filter(p => p.id !== id)
-  } catch (e) {
-    alert(e instanceof Error ? e.message : '删除失败')
+  } catch (e: unknown) {
+    error.value = e instanceof Error ? e.message : '删除失败'
   } finally {
     deleting.value = null
   }
@@ -104,7 +112,17 @@ onMounted(load)
     </div>
 
     <div v-if="loading" class="status-msg">加载中...</div>
-    <div v-else-if="error" class="status-msg">{{ error }}</div>
+    <div v-else-if="error" class="status-msg status-err">{{ error }}</div>
+
+    <div v-if="deleteTarget" class="modal-overlay" @click.self="deleteTarget = null">
+      <div class="modal-box">
+        <p>确定删除这篇文章？</p>
+        <div class="modal-actions">
+          <button class="btn-cancel" @click="deleteTarget = null">取消</button>
+          <button class="btn-confirm-delete" @click="confirmDelete">删除</button>
+        </div>
+      </div>
+    </div>
 
     <!-- Editor Mode -->
     <template v-if="!loading && (isNew || isEdit)">
@@ -148,7 +166,7 @@ onMounted(load)
               <button
                 class="btn-delete"
                 :disabled="deleting === post.id"
-                @click="handleDelete(post.id)"
+                @click="requestDelete(post.id)"
               >
                 {{ deleting === post.id ? '...' : '删除' }}
               </button>
@@ -296,4 +314,63 @@ onMounted(load)
 
 .btn-delete:hover { text-decoration: underline; }
 .btn-delete:disabled { opacity: 0.4; cursor: default; }
+
+.status-err { color: #f85149; }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-box {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 24px;
+  min-width: 300px;
+  text-align: center;
+}
+
+.modal-box p {
+  color: #c9d1d9;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-cancel {
+  background: #21262d;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.btn-cancel:hover { background: #30363d; }
+
+.btn-confirm-delete {
+  background: #da3633;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.btn-confirm-delete:hover { background: #f85149; }
 </style>

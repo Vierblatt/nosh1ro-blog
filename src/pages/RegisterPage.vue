@@ -41,8 +41,8 @@ async function handleRegister() {
       confirm_password: confirmPassword.value,
     })
     success.value = res.message
-  } catch (e: any) {
-    error.value = e.message || '注册失败'
+  } catch (e: unknown) {
+    error.value = (e instanceof Error ? e.message : null) || '注册失败'
   } finally {
     loading.value = false
   }
