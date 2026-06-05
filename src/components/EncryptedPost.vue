@@ -1,30 +1,24 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import type { Post } from '../types/post'
+import { verifyPost } from '../api'
 import { parseMarkdown } from '../utils/markdown'
 
 const props = defineProps<{ post: Post }>()
+
 const password = ref('')
 const rawContent = ref('')
 const error = ref(false)
 const loading = ref(false)
 const unlocked = ref(false)
 const htmlContent = computed(() => parseMarkdown(rawContent.value))
-const enc = props.post.encryption!
 
 async function decrypt() {
   if (!password.value) return
   error.value = false
   loading.value = true
   try {
-    const encoder = new TextEncoder()
-    const salt = Uint8Array.from(atob(enc.salt), c => c.charCodeAt(0))
-    const nonce = Uint8Array.from(atob(enc.nonce), c => c.charCodeAt(0))
-    const ciphertext = Uint8Array.from(atob(enc.ciphertext), c => c.charCodeAt(0))
-    const km = await crypto.subtle.importKey('raw', encoder.encode(password.value), 'PBKDF2', false, ['deriveKey'])
-    const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' }, km, { name: 'AES-GCM', length: 256 }, false, ['decrypt'])
-    const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: nonce }, key, ciphertext)
-    rawContent.value = new TextDecoder().decode(plain)
+    rawContent.value = await verifyPost(props.post.id, password.value)
     unlocked.value = true
   } catch {
     error.value = true
@@ -37,7 +31,10 @@ async function decrypt() {
 
 <template>
   <section class="post-section encrypted">
-    <time>{{ post.date }}</time>
+    <div class="post-meta">
+      <time>{{ post.date }}</time>
+      <span v-if="post.category" class="post-category">{{ post.category }}</span>
+    </div>
     <h2 class="post-title">🔒 {{ post.title }}</h2>
 
     <div v-if="!unlocked" class="lock-box">

@@ -59,6 +59,46 @@ body {
   margin-right: 6px;
 }
 
+/* ===== Status Messages ===== */
+.status-msg {
+  text-align: center;
+  padding: 48px 0;
+  color: #8b949e;
+  font-size: 16px;
+}
+
+/* ===== Post Meta ===== */
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.post-category {
+  font-size: 12px;
+  color: #8b949e;
+  background: #21262d;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.tag {
+  font-size: 12px;
+  color: #58a6ff;
+  background: rgba(88, 166, 255, 0.1);
+  padding: 2px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(88, 166, 255, 0.2);
+}
+
 /* ===== Post Sections ===== */
 .post-section {
   padding: 16px 0;
