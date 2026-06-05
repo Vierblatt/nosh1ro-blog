@@ -15,6 +15,16 @@ const router = createRouter({
       component: () => import('../pages/PostPage.vue'),
     },
     {
+      path: '/register',
+      name: 'register',
+      component: () => import('../pages/RegisterPage.vue'),
+    },
+    {
+      path: '/verify',
+      name: 'verify',
+      component: () => import('../pages/VerifyEmailPage.vue'),
+    },
+    {
       path: '/admin/login',
       name: 'admin-login',
       component: () => import('../pages/AdminLogin.vue'),

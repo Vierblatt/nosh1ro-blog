@@ -29,3 +29,22 @@ export interface BlogSettings {
 export interface LoginResponse {
   token: string
 }
+
+export interface RegisterRequest {
+  username: string
+  email: string
+  password: string
+  confirm_password: string
+}
+
+export interface RegisterResponse {
+  message: string
+}
+
+export interface VerifyResponse {
+  message: string
+}
+
+export interface ResendRequest {
+  email: string
+}

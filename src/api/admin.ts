@@ -1,6 +1,7 @@
-import type { Post, PostListResponse, BlogSettings, LoginResponse } from '../types/post'
+import type { Post, PostListResponse, BlogSettings, LoginResponse, RegisterRequest, RegisterResponse, VerifyResponse, ResendRequest } from '../types/post'
 
 const BASE = '/api/admin'
+const AUTH_BASE = '/api/auth'
 
 function getToken(): string | null {
   return localStorage.getItem('admin_token')
@@ -29,10 +30,43 @@ export async function login(username: string, password: string): Promise<string>
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),
   })
-  if (!res.ok) throw new Error('用户名或密码错误')
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}))
+    if (body.code === 'NOT_VERIFIED') throw new Error('邮箱未验证，请检查邮件')
+    throw new Error('用户名或密码错误')
+  }
   const data: LoginResponse = await res.json()
   localStorage.setItem('admin_token', data.token)
   return data.token
+}
+
+export async function registerUser(req: RegisterRequest): Promise<RegisterResponse> {
+  const res = await fetch(`${AUTH_BASE}/auth/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(req),
+  })
+  const body = await res.json()
+  if (!res.ok) throw new Error(body.message || '注册失败')
+  return body
+}
+
+export async function verifyEmail(token: string): Promise<VerifyResponse> {
+  const res = await fetch(`${AUTH_BASE}/auth/verify?token=${encodeURIComponent(token)}`)
+  const body = await res.json()
+  if (!res.ok) throw new Error(body.message || '验证失败')
+  return body
+}
+
+export async function resendVerification(req: ResendRequest): Promise<RegisterResponse> {
+  const res = await fetch(`${AUTH_BASE}/auth/resend-verification`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(req),
+  })
+  const body = await res.json()
+  if (!res.ok) throw new Error(body.message || '发送失败')
+  return body
 }
 
 export function logout() {

@@ -38,6 +38,9 @@ async function handleLogin() {
     <p class="login-back">
       <router-link to="/">&larr; 返回首页</router-link>
     </p>
+    <p class="login-register">
+      还没有账号？<router-link to="/register">立即注册</router-link>
+    </p>
   </div>
 </template>
 
@@ -106,6 +109,21 @@ async function handleLogin() {
 }
 
 .login-back a:hover {
+  text-decoration: underline;
+}
+
+.login-register {
+  margin-top: 12px;
+  color: #8b949e;
+  font-size: 13px;
+}
+
+.login-register a {
+  color: #58a6ff;
+  text-decoration: none;
+}
+
+.login-register a:hover {
   text-decoration: underline;
 }
 </style>
