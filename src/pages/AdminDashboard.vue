@@ -2,7 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { Post } from '../types/post'
-import { listPosts, createPost, updatePost, deletePost as apiDeletePost } from '../api/admin'
+import { listPosts, createPost, updatePost, deletePost as apiDeletePost, logout } from '../api/admin'
 import PostEditor from '../components/PostEditor.vue'
 
 const route = useRoute()
@@ -96,7 +96,11 @@ onMounted(load)
   <div class="dashboard">
     <div class="dash-header">
       <h1>文章管理</h1>
-      <router-link to="/admin/posts/new" class="btn-new">+ 新建文章</router-link>
+      <div class="dash-header-actions">
+        <router-link to="/admin/settings" class="btn-settings">设置</router-link>
+        <router-link to="/admin/posts/new" class="btn-new">+ 新建文章</router-link>
+        <button class="btn-logout" @click="logout">退出登录</button>
+      </div>
     </div>
 
     <div v-if="loading" class="status-msg">加载中...</div>
@@ -175,6 +179,12 @@ onMounted(load)
   color: #e6edf3;
 }
 
+.dash-header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .btn-new {
   background: #238636;
   color: #fff;
@@ -186,6 +196,32 @@ onMounted(load)
 }
 
 .btn-new:hover { background: #2ea043; }
+
+.btn-settings {
+  background: #21262d;
+  color: #c9d1d9;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.btn-settings:hover { background: #30363d; }
+
+.btn-logout {
+  background: none;
+  border: 1px solid #f85149;
+  color: #f85149;
+  padding: 7px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.btn-logout:hover { background: rgba(248, 81, 73, 0.1); }
 
 .status-msg {
   text-align: center;
