@@ -31,7 +31,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #58a6ff, #bc8cff);
+  background: var(--vp-c-brand);
   transition: width 0.15s linear;
 }
 </style>

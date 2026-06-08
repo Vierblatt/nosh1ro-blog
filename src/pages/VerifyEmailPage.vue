@@ -53,7 +53,7 @@ onMounted(async () => {
 }
 
 .verify-loading {
-  color: #8b949e;
+  color: var(--vp-c-text-2);
   font-size: 16px;
 }
 
@@ -66,34 +66,34 @@ onMounted(async () => {
 }
 
 .verify-success-box {
-  background: #0d1b14;
-  border: 1px solid #238636;
+  background: var(--vp-c-green-soft);
+  border: 1px solid var(--vp-c-green);
 }
 
 .verify-error-box {
-  background: #1b0d0d;
-  border: 1px solid #f85149;
+  background: var(--vp-c-red-soft);
+  border: 1px solid var(--vp-c-red);
 }
 
 .verify-icon {
   font-size: 48px;
   margin: 0 0 16px;
-  color: #7ee787;
+  color: var(--vp-c-green);
 }
 
 .verify-icon-err {
-  color: #f85149;
+  color: var(--vp-c-red);
 }
 
 .verify-msg {
-  color: #c9d1d9;
+  color: var(--vp-c-text-1);
   font-size: 16px;
   margin: 0 0 20px;
 }
 
 .verify-link {
   display: inline-block;
-  background: #238636;
+  background: var(--vp-c-brand);
   color: #fff;
   padding: 10px 24px;
   border-radius: 6px;
@@ -102,5 +102,5 @@ onMounted(async () => {
   transition: background 0.2s;
 }
 
-.verify-link:hover { background: #2ea043; }
+.verify-link:hover { background: var(--vp-c-brand-light); }
 </style>

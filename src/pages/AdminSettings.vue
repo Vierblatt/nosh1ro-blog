@@ -76,14 +76,14 @@ onMounted(load)
 h1 {
   font-size: 24px;
   font-weight: 600;
-  color: #e6edf3;
+  color: var(--vp-c-text-1);
   margin-bottom: 24px;
 }
 
 .status-msg {
   text-align: center;
   padding: 48px 0;
-  color: #8b949e;
+  color: var(--vp-c-text-2);
   font-size: 16px;
 }
 
@@ -102,46 +102,48 @@ h1 {
 
 .settings-form label span {
   font-size: 13px;
-  color: #8b949e;
+  color: var(--vp-c-text-2);
   font-weight: 500;
 }
 
 .settings-form input {
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
   border-radius: 6px;
   padding: 10px 16px;
-  color: #c9d1d9;
+  color: var(--vp-c-text-1);
   font-size: 14px;
+  font-family: inherit;
   outline: none;
   transition: border-color 0.2s;
 }
 
 .settings-form input:focus {
-  border-color: #58a6ff;
+  border-color: var(--vp-c-brand);
 }
 
 .settings-form button {
   align-self: flex-start;
-  background: #238636;
+  background: var(--vp-c-green);
   border: none;
   color: #fff;
   padding: 8px 24px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+  font-family: inherit;
   transition: background 0.2s;
 }
 
-.settings-form button:hover { background: #2ea043; }
+.settings-form button:hover { filter: brightness(1.1); }
 .settings-form button:disabled { opacity: 0.6; cursor: default; }
 
-.msg-success { color: #3fb950; font-size: 13px; }
-.msg-error { color: #f85149; font-size: 13px; }
+.msg-success { color: var(--vp-c-green); font-size: 13px; }
+.msg-error { color: var(--vp-c-red); font-size: 13px; }
 
 .back-link { margin-top: 32px; }
 .back-link a {
-  color: #58a6ff;
+  color: var(--vp-c-brand);
   text-decoration: none;
   font-size: 13px;
 }

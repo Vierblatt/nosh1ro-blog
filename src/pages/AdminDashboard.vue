@@ -194,7 +194,7 @@ onMounted(load)
 .dash-header h1 {
   font-size: 24px;
   font-weight: 600;
-  color: #e6edf3;
+  color: var(--vp-c-text-1);
 }
 
 .dash-header-actions {
@@ -204,7 +204,7 @@ onMounted(load)
 }
 
 .btn-new {
-  background: #238636;
+  background: var(--vp-c-green);
   color: #fff;
   padding: 8px 16px;
   border-radius: 6px;
@@ -213,24 +213,25 @@ onMounted(load)
   transition: background 0.2s;
 }
 
-.btn-new:hover { background: #2ea043; }
+.btn-new:hover { filter: brightness(1.1); }
 
 .btn-settings {
-  background: #21262d;
-  color: #c9d1d9;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
   padding: 8px 16px;
   border-radius: 6px;
   text-decoration: none;
   font-size: 14px;
+  border: 1px solid var(--vp-c-border);
   transition: background 0.2s;
 }
 
-.btn-settings:hover { background: #30363d; }
+.btn-settings:hover { background: var(--vp-c-bg-mute); }
 
 .btn-logout {
   background: none;
-  border: 1px solid #f85149;
-  color: #f85149;
+  border: 1px solid var(--vp-c-red);
+  color: var(--vp-c-red);
   padding: 7px 16px;
   border-radius: 6px;
   cursor: pointer;
@@ -239,12 +240,12 @@ onMounted(load)
   transition: background 0.2s;
 }
 
-.btn-logout:hover { background: rgba(248, 81, 73, 0.1); }
+.btn-logout:hover { background: var(--vp-c-red-soft); }
 
 .status-msg {
   text-align: center;
   padding: 48px 0;
-  color: #8b949e;
+  color: var(--vp-c-text-2);
   font-size: 16px;
 }
 
@@ -257,21 +258,23 @@ onMounted(load)
 .post-table th {
   text-align: left;
   padding: 10px 12px;
-  border-bottom: 1px solid #30363d;
-  color: #8b949e;
+  border-bottom: 1px solid var(--vp-c-border);
+  color: var(--vp-c-text-2);
   font-size: 13px;
   font-weight: 600;
 }
 
 .post-table td {
   padding: 10px 12px;
-  border-bottom: 1px solid #21262d;
+  border-bottom: 1px solid var(--vp-c-divider);
   font-size: 14px;
-  color: #c9d1d9;
+  color: var(--vp-c-text-2);
 }
 
-.col-title { font-weight: 500; }
-.col-cat, .col-date { color: #8b949e; }
+.col-title {
+  font-weight: 500;
+  color: var(--vp-c-text-1);
+}
 
 .status-badge {
   font-size: 12px;
@@ -280,13 +283,13 @@ onMounted(load)
 }
 
 .status-badge.published {
-  background: rgba(63, 185, 80, 0.15);
-  color: #3fb950;
+  background: var(--vp-c-green-soft);
+  color: var(--vp-c-green);
 }
 
 .status-badge.draft {
-  background: rgba(210, 153, 34, 0.15);
-  color: #d29922;
+  background: var(--vp-c-yellow-soft);
+  color: var(--vp-c-yellow);
 }
 
 .col-actions {
@@ -294,7 +297,7 @@ onMounted(load)
 }
 
 .btn-edit {
-  color: #58a6ff;
+  color: var(--vp-c-brand);
   text-decoration: none;
   font-size: 13px;
   margin-right: 12px;
@@ -305,7 +308,7 @@ onMounted(load)
 .btn-delete {
   background: none;
   border: none;
-  color: #f85149;
+  color: var(--vp-c-red);
   cursor: pointer;
   font-size: 13px;
   padding: 0;
@@ -315,7 +318,7 @@ onMounted(load)
 .btn-delete:hover { text-decoration: underline; }
 .btn-delete:disabled { opacity: 0.4; cursor: default; }
 
-.status-err { color: #f85149; }
+.status-err { color: var(--vp-c-red); }
 
 .modal-overlay {
   position: fixed;
@@ -328,8 +331,8 @@ onMounted(load)
 }
 
 .modal-box {
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
   border-radius: 8px;
   padding: 24px;
   min-width: 300px;
@@ -337,7 +340,7 @@ onMounted(load)
 }
 
 .modal-box p {
-  color: #c9d1d9;
+  color: var(--vp-c-text-1);
   margin-bottom: 20px;
   font-size: 15px;
 }
@@ -349,9 +352,9 @@ onMounted(load)
 }
 
 .btn-cancel {
-  background: #21262d;
-  color: #c9d1d9;
-  border: 1px solid #30363d;
+  background: var(--vp-c-bg-mute);
+  color: var(--vp-c-text-1);
+  border: 1px solid var(--vp-c-border);
   padding: 8px 20px;
   border-radius: 6px;
   cursor: pointer;
@@ -359,10 +362,10 @@ onMounted(load)
   font-family: inherit;
 }
 
-.btn-cancel:hover { background: #30363d; }
+.btn-cancel:hover { background: var(--vp-c-bg); }
 
 .btn-confirm-delete {
-  background: #da3633;
+  background: var(--vp-c-red);
   color: #fff;
   border: none;
   padding: 8px 20px;
@@ -372,5 +375,5 @@ onMounted(load)
   font-family: inherit;
 }
 
-.btn-confirm-delete:hover { background: #f85149; }
+.btn-confirm-delete:hover { filter: brightness(1.15); }
 </style>

@@ -110,131 +110,144 @@ function toPost(hit: SearchHit): Post {
 <template>
   <div class="home">
     <header class="hero">
-      <div class="hero-content">
-        <h1 class="hero-title">nosh1ro</h1>
-        <p class="hero-desc">一个在学 Go 的大二学生</p>
-        <div class="hero-links">
-          <a href="https://github.com/Vierblatt" target="_blank" rel="noopener" class="hero-link">
-            <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-            GitHub
-          </a>
-          <a href="/api/feed.xml" target="_blank" rel="noopener" class="hero-link">
-            <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm1.5 2.5c5.523 0 10 4.477 10 10a1 1 0 1 1-2 0 8 8 0 0 0-8-8 1 1 0 0 1 0-2zm0 4a6 6 0 0 1 6 6 1 1 0 1 1-2 0 4 4 0 0 0-4-4 1 1 0 0 1 0-2zm.5 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
-            RSS
-          </a>
-        </div>
+      <h1 class="hero-title">nosh1ro</h1>
+      <p class="hero-desc">一个在学 Go 的大二学生</p>
+      <div class="hero-links">
+        <a href="https://github.com/Vierblatt" target="_blank" rel="noopener" class="hero-btn hero-btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+        <a href="/api/feed.xml" target="_blank" rel="noopener" class="hero-btn hero-btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm1.5 2.5c5.523 0 10 4.477 10 10a1 1 0 1 1-2 0 8 8 0 0 0-8-8 1 1 0 0 1 0-2zm0 4a6 6 0 0 1 6 6 1 1 0 1 1-2 0 4 4 0 0 0-4-4 1 1 0 0 1 0-2zm.5 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+          RSS
+        </a>
       </div>
     </header>
 
-    <SearchBar @search="onSearch" />
-    <TagCloud :tags="tags" :selected="selectedTags" @toggle="toggleTag" />
+    <section class="filters">
+      <SearchBar @search="onSearch" />
+      <TagCloud :tags="tags" :selected="selectedTags" @toggle="toggleTag" />
+    </section>
 
     <!-- Aggregation chips -->
     <div v-if="aggs.categories.length || aggs.tags.length" class="agg-bar">
       <template v-if="aggs.categories.length">
-        <span class="agg-label">分类：</span>
+        <span class="agg-label">分类</span>
         <button
           v-for="c in aggs.categories" :key="c.key"
           class="agg-chip"
           @click="onAggClick('categories', c.key)"
-        >{{ c.key }} ({{ c.count }})</button>
+        >{{ c.key }} <span class="agg-count">{{ c.count }}</span></button>
       </template>
       <template v-if="aggs.tags.length">
-        <span class="agg-label">标签：</span>
+        <span class="agg-label">标签</span>
         <button
           v-for="t in aggs.tags" :key="t.key"
           class="agg-chip"
           @click="onAggClick('tags', t.key)"
-        >{{ t.key }} ({{ t.count }})</button>
+        >{{ t.key }} <span class="agg-count">{{ t.count }}</span></button>
       </template>
     </div>
 
-    <SkeletonCard v-if="loading" :count="3" />
-    <div v-else-if="error" class="status-msg">{{ error }}</div>
-    <div v-else-if="!searchResults && !posts.length" class="status-msg">暂无文章</div>
-    <div v-else-if="searchResults && !searchResults.length" class="status-msg">未找到匹配文章</div>
-    <template v-else>
-      <template v-if="searchResults">
-        <PostCard
-          v-for="hit in searchResults"
-          :key="hit.id"
-          :post="toPost(hit)"
-          :title-html="searchHl[hit.id]?.title"
-          :summary-html="searchHl[hit.id]?.summary"
-        />
-      </template>
+    <section class="post-list">
+      <SkeletonCard v-if="loading" :count="3" />
+      <div v-else-if="error" class="status-msg">{{ error }}</div>
+      <div v-else-if="!searchResults && !posts.length" class="status-msg">暂无文章</div>
+      <div v-else-if="searchResults && !searchResults.length" class="status-msg">未找到匹配文章</div>
       <template v-else>
-        <PostCard v-for="post in posts" :key="post.id" :post="post" />
+        <template v-if="searchResults">
+          <PostCard
+            v-for="hit in searchResults"
+            :key="hit.id"
+            :post="toPost(hit)"
+            :title-html="searchHl[hit.id]?.title"
+            :summary-html="searchHl[hit.id]?.summary"
+          />
+        </template>
+        <template v-else>
+          <PostCard v-for="post in posts" :key="post.id" :post="post" />
+        </template>
+        <Pagination :page="page" :total="total" :size="size" @page="p => page = p" />
       </template>
-      <Pagination :page="page" :total="total" :size="size" @page="p => page = p" />
-    </template>
+    </section>
   </div>
 </template>
 
 <style scoped>
-.home { padding: 8px 0; }
-
-.hero {
-  padding: 40px 0 32px;
-  border-bottom: 1px solid #30363d;
-  margin-bottom: 24px;
+.home {
+  padding: 8px 0;
 }
 
-.hero-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* ===== Hero ===== */
+.hero {
+  padding: 56px 0 40px;
   text-align: center;
 }
 
 .hero-title {
-  font-size: 40px;
+  font-size: 42px;
   font-weight: 700;
-  background: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 8px;
-  letter-spacing: -0.5px;
+  color: var(--vp-c-text-1);
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+  line-height: 1.2;
 }
 
 .hero-desc {
-  color: #8b949e;
-  font-size: 16px;
-  margin-bottom: 16px;
+  color: var(--vp-c-text-2);
+  font-size: 18px;
+  margin-bottom: 24px;
+  line-height: 1.5;
 }
 
 .hero-links {
   display: flex;
+  justify-content: center;
   gap: 12px;
 }
 
-.hero-link {
+.hero-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #8b949e;
+  padding: 9px 22px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
   text-decoration: none;
-  font-size: 13px;
-  padding: 6px 14px;
-  border: 1px solid #30363d;
-  border-radius: 6px;
   transition: all 0.2s;
 }
 
-.hero-link:hover {
-  color: #e6edf3;
-  border-color: #58a6ff;
-  background: rgba(88, 166, 255, 0.08);
+.hero-btn-primary {
+  background: var(--vp-c-brand);
+  border: 1px solid var(--vp-c-brand);
+  color: #fff;
 }
 
-.status-msg {
-  text-align: center;
-  padding: 48px 0;
-  color: #8b949e;
-  font-size: 16px;
+.hero-btn-primary:hover {
+  background: var(--vp-c-brand-light);
+  border-color: var(--vp-c-brand-light);
+  color: #fff;
 }
 
+.hero-btn-secondary {
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
+  color: var(--vp-c-text-2);
+}
+
+.hero-btn-secondary:hover {
+  border-color: var(--vp-c-brand);
+  color: var(--vp-c-brand);
+}
+
+/* ===== Filters ===== */
+.filters {
+  padding: 24px 0 8px;
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+/* ===== Aggregation ===== */
 .agg-bar {
   display: flex;
   flex-wrap: wrap;
@@ -242,22 +255,24 @@ function toPost(hit: SearchHit): Post {
   align-items: center;
   margin-bottom: 16px;
   padding: 12px 16px;
-  background: #161b22;
-  border: 1px solid #21262d;
-  border-radius: 8px;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
+  border-radius: var(--vp-radius);
 }
 
 .agg-label {
-  color: #6e7681;
-  font-size: 13px;
+  color: var(--vp-c-text-3);
+  font-size: 12px;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   margin-right: 4px;
 }
 
 .agg-chip {
-  background: #21262d;
-  border: 1px solid #30363d;
-  color: #c9d1d9;
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-border);
+  color: var(--vp-c-text-2);
   padding: 4px 10px;
   border-radius: 14px;
   font-size: 12px;
@@ -267,13 +282,32 @@ function toPost(hit: SearchHit): Post {
 }
 
 .agg-chip:hover {
-  border-color: #58a6ff;
-  color: #58a6ff;
-  background: rgba(88, 166, 255, 0.08);
+  border-color: var(--vp-c-brand);
+  color: var(--vp-c-brand);
+}
+
+.agg-count {
+  color: var(--vp-c-text-3);
+  font-size: 11px;
+  margin-left: 2px;
+}
+
+/* ===== Post list ===== */
+.post-list {
+  padding: 8px 0;
 }
 
 @media (max-width: 640px) {
-  .hero { padding: 24px 0 20px; }
-  .hero-title { font-size: 28px; }
+  .hero {
+    padding: 32px 0 24px;
+  }
+
+  .hero-title {
+    font-size: 30px;
+  }
+
+  .hero-desc {
+    font-size: 16px;
+  }
 }
 </style>

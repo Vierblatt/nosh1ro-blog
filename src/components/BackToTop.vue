@@ -33,22 +33,22 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: #21262d;
-  border: 1px solid #30363d;
-  color: #8b949e;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
+  color: var(--vp-c-text-2);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
   z-index: 100;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--vp-shadow-2);
 }
 
 .back-to-top:hover {
-  background: #30363d;
-  color: #e6edf3;
+  background: var(--vp-c-bg-mute);
+  color: var(--vp-c-text-1);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
 </style>

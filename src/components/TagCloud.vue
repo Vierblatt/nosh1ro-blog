@@ -22,28 +22,27 @@ const emit = defineEmits<{ (e: 'toggle', tag: string): void }>()
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .tag-btn {
   font-size: 12px;
-  color: #58a6ff;
-  background: rgba(88, 166, 255, 0.1);
-  padding: 4px 12px;
+  color: var(--vp-c-brand);
+  background: var(--vp-c-brand-soft);
+  padding: 3px 12px;
   border-radius: 12px;
-  border: 1px solid rgba(88, 166, 255, 0.2);
+  border: 1px solid transparent;
   cursor: pointer;
-  transition: all 0.2s;
   font-family: inherit;
+  transition: all 0.15s;
 }
 
 .tag-btn:hover {
-  background: rgba(88, 166, 255, 0.2);
+  background: rgba(52, 81, 178, 0.2);
 }
 
 .tag-btn.active {
-  background: #1f6feb;
+  background: var(--vp-c-brand);
   color: #fff;
-  border-color: #1f6feb;
 }
 </style>

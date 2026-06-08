@@ -55,7 +55,7 @@ async function handleLogin() {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 24px;
-  color: #e6edf3;
+  color: var(--vp-c-text-1);
 }
 
 .login-form {
@@ -65,36 +65,38 @@ async function handleLogin() {
 }
 
 .login-form input {
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
   border-radius: 6px;
   padding: 10px 16px;
-  color: #c9d1d9;
+  color: var(--vp-c-text-1);
   font-size: 14px;
+  font-family: inherit;
   outline: none;
   transition: border-color 0.2s;
 }
 
 .login-form input:focus {
-  border-color: #58a6ff;
+  border-color: var(--vp-c-brand);
 }
 
 .login-form button {
-  background: #238636;
+  background: var(--vp-c-green);
   border: none;
   color: #fff;
   padding: 10px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+  font-family: inherit;
   transition: background 0.2s;
 }
 
-.login-form button:hover { background: #2ea043; }
+.login-form button:hover { filter: brightness(1.1); }
 .login-form button:disabled { opacity: 0.6; cursor: default; }
 
 .login-err {
-  color: #f85149;
+  color: var(--vp-c-red);
   font-size: 13px;
 }
 
@@ -103,7 +105,7 @@ async function handleLogin() {
 }
 
 .login-back a {
-  color: #58a6ff;
+  color: var(--vp-c-brand);
   text-decoration: none;
   font-size: 13px;
 }
@@ -114,12 +116,12 @@ async function handleLogin() {
 
 .login-register {
   margin-top: 12px;
-  color: #8b949e;
+  color: var(--vp-c-text-2);
   font-size: 13px;
 }
 
 .login-register a {
-  color: #58a6ff;
+  color: var(--vp-c-brand);
   text-decoration: none;
 }
 

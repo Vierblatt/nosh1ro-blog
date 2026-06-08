@@ -16,54 +16,59 @@ onMounted(async () => {
 
 <template>
   <footer class="footer">
-    <span class="status-dot" :class="status" />
-    <span v-if="status === 'ok'" class="status-text">API 正常</span>
-    <span v-else-if="status === 'degraded'" class="status-text">API 异常</span>
-    <span v-else class="status-text">检测中...</span>
-    <span class="sep">·</span>
-    <a href="/api/feed.xml" target="_blank" rel="noopener">RSS</a>
-    <span class="sep">·</span>
-    <span>Vue 3 + Go · Cloudflare · Ubuntu</span>
+    <div class="footer-left">
+      <span class="status-dot" :class="status" :title="status === 'ok' ? 'API 正常' : status === 'degraded' ? 'API 异常' : '检测中...'" />
+      <span>nosh1ro's blog</span>
+    </div>
+    <div class="footer-right">
+      <a href="/api/feed.xml" target="_blank" rel="noopener">RSS</a>
+      <span class="sep">|</span>
+      <span>Vue 3 + Go</span>
+    </div>
   </footer>
 </template>
 
 <style scoped>
 .footer {
-  text-align: center;
-  padding-top: 32px;
-  color: #484f58;
-  font-size: 13px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
+  justify-content: space-between;
+  padding: 32px 0 16px;
+  margin-top: auto;
+  color: var(--vp-c-text-3);
+  font-size: 13px;
+  border-top: 1px solid var(--vp-c-divider);
 }
 
 .footer a {
-  color: #58a6ff;
+  color: var(--vp-c-text-2);
   text-decoration: none;
+  transition: color 0.15s;
 }
 
 .footer a:hover {
-  text-decoration: underline;
+  color: var(--vp-c-brand);
+}
+
+.footer-left,
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .sep {
-  color: #30363d;
+  color: var(--vp-c-divider);
 }
 
 .status-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
-.status-dot.ok { background: #3fb950; }
-.status-dot.degraded { background: #f85149; }
-.status-dot.loading { background: #d29922; }
-
-.status-text {
-  color: #8b949e;
-}
+.status-dot.ok { background: var(--vp-c-green); }
+.status-dot.degraded { background: var(--vp-c-red); }
+.status-dot.loading { background: var(--vp-c-yellow); }
 </style>

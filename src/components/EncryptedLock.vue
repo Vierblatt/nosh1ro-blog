@@ -33,16 +33,16 @@ function submit() {
 
 <style scoped>
 .lock-box {
-  background: #161b22;
-  border: 1px solid #30363d;
-  border-radius: 6px;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
+  border-radius: var(--vp-radius);
   padding: 24px;
   text-align: center;
   margin-bottom: 16px;
 }
 
 .lock-box p {
-  color: #8b949e;
+  color: var(--vp-c-text-2);
   margin-bottom: 12px;
 }
 
@@ -53,38 +53,40 @@ function submit() {
 }
 
 .pw-row input {
-  background: #0d1117;
-  border: 1px solid #30363d;
-  color: #c9d1d9;
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-border);
+  color: var(--vp-c-text-1);
   padding: 8px 16px;
   border-radius: 6px;
   font-size: 14px;
   width: 220px;
   outline: none;
+  font-family: inherit;
   transition: border-color 0.2s;
 }
 
 .pw-row input:focus {
-  border-color: #58a6ff;
+  border-color: var(--vp-c-brand);
 }
 
 .pw-row button {
-  background: #238636;
+  background: var(--vp-c-green);
   border: none;
   color: #fff;
   padding: 8px 20px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+  font-family: inherit;
   transition: background 0.2s;
   white-space: nowrap;
 }
 
-.pw-row button:hover { background: #2ea043; }
+.pw-row button:hover { filter: brightness(1.1); }
 .pw-row button:disabled { opacity: 0.6; cursor: default; }
 
 .pw-err {
-  color: #f85149 !important;
+  color: var(--vp-c-red) !important;
   margin-top: 8px;
   font-size: 13px;
 }

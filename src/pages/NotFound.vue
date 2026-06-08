@@ -18,28 +18,25 @@
 .nf-code {
   font-size: 96px;
   font-weight: 700;
-  background: linear-gradient(135deg, #58a6ff, #bc8cff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--vp-c-text-3);
   line-height: 1;
   margin-bottom: 16px;
 }
 
 .nf-text {
-  color: #8b949e;
+  color: var(--vp-c-text-2);
   font-size: 18px;
   margin-bottom: 32px;
 }
 
 .nf-link {
-  color: #58a6ff;
+  color: var(--vp-c-brand);
   text-decoration: none;
   font-size: 15px;
   transition: color 0.2s;
 }
 
 .nf-link:hover {
-  color: #79c0ff;
+  color: var(--vp-c-brand-light);
 }
 </style>

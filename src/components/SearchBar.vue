@@ -30,7 +30,7 @@ watch(input, (val) => {
 <style scoped>
 .search-bar {
   position: relative;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .search-icon {
@@ -38,26 +38,29 @@ watch(input, (val) => {
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #484f58;
+  color: var(--vp-c-text-3);
+  pointer-events: none;
 }
 
 .search-input {
   width: 100%;
-  background: #161b22;
-  border: 1px solid #30363d;
-  border-radius: 6px;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
+  border-radius: 8px;
   padding: 10px 16px 10px 38px;
-  color: #c9d1d9;
+  color: var(--vp-c-text-1);
   font-size: 14px;
+  font-family: inherit;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, background 0.2s;
 }
 
 .search-input:focus {
-  border-color: #58a6ff;
+  border-color: var(--vp-c-brand);
+  background: var(--vp-c-bg);
 }
 
 .search-input::placeholder {
-  color: #484f58;
+  color: var(--vp-c-text-3);
 }
 </style>
