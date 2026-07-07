@@ -1,6 +1,7 @@
 import type { Post, PostListResponse, SearchRequest, SearchResult } from '../types/post'
 
-const BASE = '/api'
+const API_HOST = import.meta.env.PROD ? 'https://api.nosh1ro.top' : ''
+const BASE = `${API_HOST}/api`
 
 export async function fetchPosts(params?: {
   page?: number

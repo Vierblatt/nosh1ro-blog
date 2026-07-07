@@ -1,7 +1,8 @@
 import type { Post, PostListResponse, BlogSettings, LoginResponse, RegisterRequest, RegisterResponse, VerifyResponse, ResendRequest } from '../types/post'
 
-const BASE = '/api/admin'
-const AUTH_BASE = '/api/auth'
+const API_HOST = import.meta.env.PROD ? 'https://api.nosh1ro.top' : ''
+const BASE = `${API_HOST}/api/admin`
+const AUTH_BASE = `${API_HOST}/api/auth`
 
 function getToken(): string | null {
   return localStorage.getItem('admin_token')
